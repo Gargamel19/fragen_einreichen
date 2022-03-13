@@ -171,7 +171,7 @@ def upload():
         file.save(file_path)
         file.close()
         ammount = 0
-        with open(file_path, "r") as file2:
+        with open(file_path, "r", encoding="utf-8") as file2:
             print("file red")
             lines = file2.readlines()
             for line in lines:
