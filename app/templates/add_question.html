@@ -27,4 +27,10 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
+
+    <form enctype=multipart/form-data action="{{ url_for("upload") }}" method="POST">
+    <input type=file name="file">
+    <button>Send</button>
+
+    </form>
 {% endblock %}

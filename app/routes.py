@@ -1,6 +1,8 @@
 import datetime
 import os
 
+from werkzeug.utils import secure_filename
+
 from app import app
 from flask import render_template, request, redirect, url_for, flash, Response, send_from_directory, current_app, \
     send_file
@@ -19,6 +21,9 @@ def add_user(username, password):
         user.set_password(password)
         user.insert()
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
 
 @app.route("/")
 def index():
@@ -38,6 +43,7 @@ def add_question_post():
     form = FragenForm()
     question = Question(form.frage.data, form.antwort.data, form.kategorie.data, form.name.data)
     question.insert()
+    flash('added Question')
     return redirect(url_for("add_question_post"))
 
 
@@ -145,4 +151,44 @@ def download_all():
 def download_db():
     uploads = os.path.join(current_app.root_path, "app.db")
     return send_file(uploads, as_attachment=True)
+
+@app.route("/uplaod", methods=["POST"])
+def upload():
+    print(request.files)
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    print(file)
+    # If the user does not select a file, the browser submits an
+    # empty file without a filename.
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        file.close()
+        ammount = 0
+        with open(file_path, "r") as file2:
+            print("file red")
+            lines = file2.readlines()
+            for line in lines:
+                new_line = line.split(";")
+                if len(new_line) == 2:
+                    question = Question(new_line[0], new_line[1], None, None)
+                    question.insert()
+                    ammount = ammount + 1
+                    print("line")
+                elif len(new_line) == 5:
+                    question = Question(new_line[1], new_line[2], new_line[3], new_line[4])
+                    question.insert()
+                    ammount = ammount + 1
+                    print("line")
+            print()
+        os.remove(file_path)
+        flash("inserted " + str(ammount) + " Questions")
+    return redirect(url_for('add_question'))
+
 

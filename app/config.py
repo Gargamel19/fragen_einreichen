@@ -14,3 +14,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 MY_IP = os.environ.get('MY_IP') or "http://127.0.0.1:5000/"
 
 KATEGORIEN = os.environ.get('KATEGORIEN') or ["Keine Kategorie", "Politik", "Allgemeinwissen", "Medizin", "Mathe"]
+
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'csv'}
