@@ -18,6 +18,12 @@ def add_user(username, password):
         user.insert()
 
 
+@app.route("/")
+def index():
+    username = get_username_from_current_user()
+    return render_template('topnav.html', username=username)
+
+
 @app.route('/question/add')
 def add_question():
     form = FragenForm()
