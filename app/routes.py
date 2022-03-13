@@ -1,7 +1,9 @@
 import datetime
+import os
 
 from app import app
-from flask import render_template, request, redirect, url_for, flash, Response
+from flask import render_template, request, redirect, url_for, flash, Response, send_from_directory, current_app, \
+    send_file
 
 from app.forms import LoginForm, FragenForm
 from app.models import User, Question
@@ -136,4 +138,11 @@ def download_all():
         mimetype="text/csv",
         headers={"Content-disposition":
                      "attachment; filename=fragen_export_" + str(datetime.datetime.now().timestamp())+ ".csv"})
+
+
+@app.route("/download_db", methods=['GET'])
+@login_required
+def download_db():
+    uploads = os.path.join(current_app.root_path, "app.db")
+    return send_file(uploads, as_attachment=True)
 
