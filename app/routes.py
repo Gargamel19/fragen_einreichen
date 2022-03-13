@@ -171,10 +171,9 @@ def upload():
         file.save(file_path)
         file.close()
         ammount = 0
-        with open(file_path, "r", encoding="utf-8") as file2:
+        with open(file_path, "r", encoding="utf-8", errors='ignore') as file2:
             print("file red")
-            lines = file2.readlines()
-            for line in lines:
+            for line in file2:
                 new_line = line.split(";")
                 if len(new_line) == 2:
                     question = Question(new_line[0], new_line[1], None, None)
