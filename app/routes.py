@@ -171,7 +171,7 @@ def upload():
         file.save(file_path)
         file.close()
         ammount = 0
-        with open(file_path, "r", encoding="utf-8", errors='ignore') as file2:
+        with open(file_path, "r", encoding="utf-8", errors='replace') as file2:
             print("file red")
             for line in file2:
                 new_line = line.split(";")
