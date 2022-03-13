@@ -1,0 +1,31 @@
+{% include 'topnav.html' %}
+{% block content %}
+    <h1>Bearbeite Frage:</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.frage.label }}<br>
+            {{ form.frage.value }}<br>
+            {{ form.frage(size=32, value=aktuelle_frage.question) }}<br>
+            {% for error in form.frage.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.antwort.label }}<br>
+            {{ form.antwort(value=aktuelle_frage.answer, size=32) }}<br>
+            {% for error in form.antwort.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.kategorie.label }}<br>
+            {{ form.kategorie(value=aktuelle_frage.kategory) }}<br>
+        </p>
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(value=aktuelle_frage.username) }}<br>
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
