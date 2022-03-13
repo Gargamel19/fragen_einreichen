@@ -27,7 +27,16 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-
+<br><br><br><br>
+    falls du die fragen in einer datei auf deinem rechner erstellt hast kannst du es als .csv exportieren und hier hochladen. <br><br>
+    WICHTIG: <br>
+    <strong style="color: red">codierung UTF-8</strong> <br>
+    Format: <br>
+    <strong style="color: darkblue">Frage;Antwort</strong> <br>
+    <strong style="color: darkblue">Frage2;Antwort2</strong> <br>
+    ODER <br>
+    <strong style="color: darkblue">0;Frage;Antwort;Kategorie;Ersteller</strong> <br>
+    <strong style="color: darkblue">0;Frage2;Antwort2;Kategorie;Ersteller</strong> <br>
     <form enctype=multipart/form-data action="{{ url_for("upload") }}" method="POST">
     <input type=file name="file">
     <button>Send</button>
