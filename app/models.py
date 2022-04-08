@@ -47,10 +47,10 @@ class Question(db.Model):
     username = db.Column(db.String(128))
 
     def __init__(self, question, answer, kategory, username):
-        self.username = username
-        self.kategory = kategory
-        self.question = question
-        self.answer = answer
+        self.username = username.replace("\n", "")
+        self.kategory = kategory.replace("\n", "")
+        self.question = question.replace("\n", "")
+        self.answer = answer.replace("\n", "")
 
     def insert(self):
         db.session.add(self)

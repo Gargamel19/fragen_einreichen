@@ -13,6 +13,7 @@ from app.models import User, Question
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
+required_ammound = 500
 
 def add_user(username, password):
     user = User(username=username)
@@ -21,14 +22,17 @@ def add_user(username, password):
         user.set_password(password)
         user.insert()
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
 
+
 @app.route("/")
 def index():
     username = get_username_from_current_user()
-    return render_template('topnav.html', username=username)
+    recent_ammound = len(Question.query.all())
+    return render_template('home.html', recent_ammound=recent_ammound, required_ammound=required_ammound, username=username)
 
 
 @app.route('/question/add')
@@ -138,7 +142,19 @@ def download_all():
     questions = Question.query.all()
     output = ""
     for question in questions:
-        output = output + ("{};{};{};{};{}\n".format(question.id, question.question, question.answer, question.kategory, question.username))
+        question_question = question.answer
+        if question_question:
+            question_question = question_question.replace("\n", "")
+        question_answer = question.answer
+        if question_answer:
+            question_answer = question_answer.replace("\n", "")
+        question_kategory = question.kategory
+        if question_kategory:
+            question_kategory = question_kategory.replace("\n", "")
+        question_username = question.username
+        if question_username:
+            question_username = question_username.replace("\n", "")
+        output = output + ("{};{};{};{};{}\n".format(question.id, question_question, question_answer, question_kategory, question_username))
     return Response(
         output,
         mimetype="text/csv",
