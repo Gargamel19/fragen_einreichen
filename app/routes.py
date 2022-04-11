@@ -168,6 +168,7 @@ def download_db():
     uploads = os.path.join(current_app.root_path, "app.db")
     return send_file(uploads, as_attachment=True)
 
+
 @app.route("/uplaod", methods=["POST"])
 def upload():
     print(request.files)
